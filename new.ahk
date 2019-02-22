@@ -1,6 +1,16 @@
 #include <Vis2>
 #include <Notify>
 
+;           _____  __  __ _____ _   _      _    _ ______ _      _____  ______ _____  
+;     /\   |  __ \|  \/  |_   _| \ | |    | |  | |  ____| |    |  __ \|  ____|  __ \ 
+;    /  \  | |  | | \  / | | | |  \| |    | |__| | |__  | |    | |__) | |__  | |__) |
+;   / /\ \ | |  | | |\/| | | | | . ` |    |  __  |  __| | |    |  ___/|  __| |  _  / 
+;  / ____ \| |__| | |  | |_| |_| |\  |    | |  | | |____| |____| |    | |____| | \ \ 
+; /_/    \_\_____/|_|  |_|_____|_| \_|    |_|  |_|______|______|_|    |______|_|  \_\
+;
+; by Arbys
+                                                                                  
+
 ;============================;
 ;        [ PROMĚNNÉ ]        ;
 ;============================;
@@ -223,7 +233,7 @@ FilterList(l) ; Filtrace listu
 		w0 := Vis2.Graphics.Subtitle.Render("", "xCenter y55% w800 h350 c0099FF")
 		w1 := Vis2.Graphics.Subtitle.Render("ADMIN HELPER", "xCenter y55% w800 c0066CC", "xCenter y10% cffffff s4%")
 		wauthor := Vis2.Graphics.Subtitle.Render("by Arbys", "x1290 y57.7% cNone", "xCenter cffffff s1.8%")
-		wversion := Vis2.Graphics.Subtitle.Render("v1.0", "x560 y57.7% cNone", "xCenter cffffff s1.8%")
+		wversion := Vis2.Graphics.Subtitle.Render(%version%, "x560 y57.7% cNone", "xCenter cffffff s1.8%")
 		if(iup == "T")
 		{
 			w2 := Vis2.Graphics.Subtitle.Render("⮝", "xCenter cNone y60%", "c00d800 s8%")
@@ -806,3 +816,6 @@ if (!(x == y))
    y := x
 }
 return
+
+;============================
+; SEM SI LZE DÁT SVOJE BINDY:
