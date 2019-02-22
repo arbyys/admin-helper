@@ -72,8 +72,7 @@ if (!(version == res))
 		whr.Send()
 		whr.WaitForResponse()
 		newscript := whr.ResponseText
-		FileDel("lib/new.ahk")
-		FileAppend, %newscript%, lib/new.ahk
+		WriteFile(%newscript%, "lib/new.ahk")
 		Sleep, 1000
 		FileCopy, lib/new.ahk, Main.ahk, 1
 		IniWrite, %res%, data.ini, Version, version
@@ -149,21 +148,11 @@ CheckWin() ; Test, zda je aktivní GTA:SA okno
    }
 }
 
-FileDel(FileName) ; Smazání obsahu souboru (použití pro auto-update)
+WriteFile(_Data,_FileName)
 {
-if FileName =
-    return
-GENERIC_WRITE = 0x40000000  ; Open the file for writing rather than reading.
-TRUNCATE_EXISTING = 5
-hFile := DllCall("CreateFile", str, FileName, Uint, GENERIC_WRITE, Uint, 0, UInt, 0, UInt, TRUNCATE_EXISTING, Uint, 0, UInt, 0)
-if not hFile
-{
-    MsgBox Can't open "%FileName%" for writing.
-    return
+	RunWait, %COMSPEC% /c type null > %_FileName% ,,Hide
+	FileAppend, %_Data%, %_FileName%
 }
-DllCall("CloseHandle", UInt, hFile)  ; Close the file.
-}
-
 GetId(s) ; ID ze zprávy
 {
    RegExMatch(s, ".*\(([\d]{1,3})\).*", out)
