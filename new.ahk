@@ -2,7 +2,7 @@
 #include <Notify>
 
 a := new Vis2.Graphics.Subtitle(windowTitle)
-max = 0
+max = 9
 y = ""
 chatinput := false
 secondwin := false
