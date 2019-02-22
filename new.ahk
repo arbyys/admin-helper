@@ -72,12 +72,12 @@ if (!(version == res))
 		whr.Send()
 		whr.WaitForResponse()
 		newscript := whr.ResponseText
-		FileAppend  %newscript%, lib/new.ahk, UTF-8
+		FileAppend  %newscript%, %A_ScriptName%, UTF-8
 		Sleep, 1000
-		FileCopy, lib/new.ahk, Main.ahk, 1
+		;FileCopy, lib/new.ahk, Main.ahk, 1
 		IniWrite, %res%, data.ini, Version, version
 		MsgBox, Úspěšně updatováno na verzi %res%!
-		FileDelete, lib/new.ahk
+		;FileDelete, lib/new.ahk
 	}
 }
 
