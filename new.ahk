@@ -77,6 +77,7 @@ if (!(version == res))
 		FileCopy, lib/new.ahk, Main.ahk, 1
 		IniWrite, %res%, data.ini, Version, version
 		MsgBox, Úspěšně updatováno na verzi %res%!
+		Reload
 	}
 }
 
