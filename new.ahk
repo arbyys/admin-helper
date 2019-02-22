@@ -1,9 +1,12 @@
-FileEncoding, UTF-8
 #include <Vis2>
 #include <Notify>
 
+;============================;
+;        [ PROMĚNNÉ ]        ;
+;============================;
+
 a := new Vis2.Graphics.Subtitle(windowTitle)
-max = 9
+max = 21
 y = ""
 chatinput := false
 secondwin := false
@@ -13,10 +16,13 @@ leftobj = false
 action = 0
 posh = 0
 pose := [-1, -1, -1, -1, -1]
-
 akce_id := []
 akce_odmeny := []
 akce_nazev = ""
+
+;============================;
+;       [ NASTAVENÍ ]        ;
+;============================;
 
 IniRead, iup, settings.ini, ButtonsB, Up
 IniRead, ileft, settings.ini, ButtonsB, Left 
@@ -27,18 +33,25 @@ IniRead, chatlogpath, settings.ini, About, chatlogpath
 IniRead, name, settings.ini, About, name
 IniRead, version, data.ini, Version, version
 
+;============================;
+;       [ PO STARTU ]        ;
+;============================;
+
+; Jestli script běží s admin právy
 if not A_IsAdmin
 {
    Run *RunAs "%A_ScriptFullPath%"
    ExitApp
 }
 
+; Auto-updater
 whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
 whr.Open("GET", "https://raw.githubusercontent.com/czArbys/admin-helper/master/version.txt", true)
 whr.Send()
 whr.WaitForResponse()
 res := whr.ResponseText
 StringReplace, res, res, `n,, All
+
 if (!(version == res))
 {
 	MsgBox, 4,, K dispozici je nová verze Admin Helperu. Chcete updatovat?
@@ -50,10 +63,10 @@ if (!(version == res))
 		FileMove, new.ahk, Main.ahk
 		IniWrite, %res%, data.ini, Version, version
 		MsgBox, Úspěšně updatováno na verzi %res%!
-		Reload
 	}
 }
 
+; Nastavení chatlogu
 if (chatlogpath == 0)
 {
 
@@ -81,6 +94,8 @@ if (chatlogpath == 0)
 	
 
 }
+
+; Nastavení jména
 if (name == 0)
 {
 	InputBox, UserInput, Jméno, Zadejte své jméno v SA:MP., , 300, 150
@@ -96,12 +111,16 @@ if (name == 0)
 	}
 }
 
+; "Check" se bude opakovat každých 200ms
 #Persistent
 SetTimer, Check, 200
 return
 
+;============================;
+;         [ FUNKCE ]         ;
+;============================;
 
-CheckWin()
+CheckWin() ; Test, zda je aktivní GTA:SA okno
 {
    WinGetTitle, Title, A
 
@@ -115,27 +134,27 @@ CheckWin()
    }
 }
 
-GetId(s) 
+GetId(s) ; ID ze zprávy
 {
    RegExMatch(s, ".*\(([\d]{1,3})\).*", out)
    Return out1
    
 }
 
-GetIdRace(s) 
+GetIdRace(s) ; ID ze zprávy o závodě
 {
    RegExMatch(s, ".*\w\(([\d]{1,3})\).*", out)
    Return out1
 
 }
 
-GetPos(s)
+GetPos(s) ; Pozice ze zprávy o závodě
 {
 	RegExMatch(s, ".*\s\((\d{1})\)", out)
 	Return out1
 }
 
-FormatChatlog(k, f) 
+FormatChatlog(k, f) ; Poslední řádek chatlogu
 {
 
    Loop Read, %f%
@@ -153,7 +172,7 @@ FormatChatlog(k, f)
 
 }
 
-FilterList(l)
+FilterList(l) ; Filtrace listu
 {
 	ail := ""
 	Loop % l.Length()
@@ -167,47 +186,34 @@ FilterList(l)
 	return ail
 }
 
-StR(string, times)
-{
-    loop % times
-        output .= string
-    return output
-}
-
+;============================;
+;          [ MENU ]          ;
+;============================;
 
 !;::
+
 	DllCall("ShowCursor","Uint",0)
+	
+	;Smazání menu
 	if (w0.isVisible() == 1)
 	{
 		wr := Vis2.Graphics.Subtitle.Render("", "xCenter y55% w800 h350 c0099FF")
-		w1.Destroy()
-		w2.Destroy()
-		w3.Destroy()
-		w4.Destroy()
-		w5.Destroy()
-		w6.Destroy()
-		w7.Destroy()
-		w8.Destroy()
-		w9.Destroy()
-		w10.Destroy()
-		w11.Destroy()
-		w12.Destroy()
-		w13.Destroy()
-		w14.Destroy()
-		w15.Destroy()
-		w16.Destroy()
-		w17.Destroy()
-		w18.Destroy()
-		w19.Destroy()
-		w20.Destroy()
-		w21.Destroy()
+		Loop
+		{
+			if (A_Index > max)
+			{
+				break
+			}
+			
+			w%A_index%.Destroy()
+		}
 		wauthor.Destroy()
 		wversion.Destroy()
 		w0.Destroy()
 		wr.Destroy()
 	}
 	
-	
+	;Vykreslení menu
 	else
 	{
 		w0 := Vis2.Graphics.Subtitle.Render("", "xCenter y55% w800 h350 c0099FF")
@@ -266,10 +272,16 @@ StR(string, times)
 	}
 return
 
+;============================;
+;         [ BINDY ]          ;
+;============================;
+
+;Ukončení aplikace
 !Del::
 ExitApp
 return
 
+;Bindy pokud je menu aktivní
 #If w0.isVisible() == 1
 Up::
 	if(iup == "T")
@@ -353,27 +365,15 @@ Numpad1::
 if (CheckWin())
 {
 	wr := Vis2.Graphics.Subtitle.Render("", "xCenter y55% w800 h350 c0099FF")
-	w1.Destroy()
-	w2.Destroy()
-	w3.Destroy()
-	w4.Destroy()
-	w5.Destroy()
-	w6.Destroy()
-	w7.Destroy()
-	w8.Destroy()
-	w9.Destroy()
-	w10.Destroy()
-	w11.Destroy()
-	w12.Destroy()
-	w13.Destroy()
-	w14.Destroy()
-	w15.Destroy()
-	w16.Destroy()
-	w17.Destroy()
-	w18.Destroy()
-	w19.Destroy()
-	w20.Destroy()
-	w21.Destroy()
+	Loop
+	{
+		if (A_Index > max)
+		{
+			break
+		}
+		
+		w%A_index%.Destroy()
+	}
 	wauthor.Destroy()
 	wversion.Destroy()
 	w0.Destroy()
@@ -392,27 +392,15 @@ Numpad2::
 if (CheckWin())
 {
 	wr := Vis2.Graphics.Subtitle.Render("", "xCenter y55% w800 h350 c0099FF")
-	w1.Destroy()
-	w2.Destroy()
-	w3.Destroy()
-	w4.Destroy()
-	w5.Destroy()
-	w6.Destroy()
-	w7.Destroy()
-	w8.Destroy()
-	w9.Destroy()
-	w10.Destroy()
-	w11.Destroy()
-	w12.Destroy()
-	w13.Destroy()
-	w14.Destroy()
-	w15.Destroy()
-	w16.Destroy()
-	w17.Destroy()
-	w18.Destroy()
-	w19.Destroy()
-	w20.Destroy()
-	w21.Destroy()
+	Loop
+	{
+		if (A_Index > max)
+		{
+			break
+		}
+		
+		w%A_index%.Destroy()
+	}
 	wauthor.Destroy()
 	wversion.Destroy()
 	w0.Destroy()
@@ -430,27 +418,15 @@ Numpad3::
 if (CheckWin())
 {
 	wr := Vis2.Graphics.Subtitle.Render("", "xCenter y55% w800 h350 c0099FF")
-	w1.Destroy()
-	w2.Destroy()
-	w3.Destroy()
-	w4.Destroy()
-	w5.Destroy()
-	w6.Destroy()
-	w7.Destroy()
-	w8.Destroy()
-	w9.Destroy()
-	w10.Destroy()
-	w11.Destroy()
-	w12.Destroy()
-	w13.Destroy()
-	w14.Destroy()
-	w15.Destroy()
-	w16.Destroy()
-	w17.Destroy()
-	w18.Destroy()
-	w19.Destroy()
-	w20.Destroy()
-	w21.Destroy()
+	Loop
+	{
+		if (A_Index > max)
+		{
+			break
+		}
+		
+		w%A_index%.Destroy()
+	}
 	wauthor.Destroy()
 	wversion.Destroy()
 	w0.Destroy()
@@ -468,27 +444,15 @@ Numpad4::
 if (CheckWin())
 {
 	wr := Vis2.Graphics.Subtitle.Render("", "xCenter y55% w800 h350 c0099FF")
-	w1.Destroy()
-	w2.Destroy()
-	w3.Destroy()
-	w4.Destroy()
-	w5.Destroy()
-	w6.Destroy()
-	w7.Destroy()
-	w8.Destroy()
-	w9.Destroy()
-	w10.Destroy()
-	w11.Destroy()
-	w12.Destroy()
-	w13.Destroy()
-	w14.Destroy()
-	w15.Destroy()
-	w16.Destroy()
-	w17.Destroy()
-	w18.Destroy()
-	w19.Destroy()
-	w20.Destroy()
-	w21.Destroy()
+	Loop
+	{
+		if (A_Index > max)
+		{
+			break
+		}
+		
+		w%A_index%.Destroy()
+	}
 	wauthor.Destroy()
 	wversion.Destroy()
 	w0.Destroy()
@@ -505,27 +469,15 @@ else
 return
 Numpad5::
 	wr := Vis2.Graphics.Subtitle.Render("", "xCenter y55% w800 h350 c0099FF")
-	w1.Destroy()
-	w2.Destroy()
-	w3.Destroy()
-	w4.Destroy()
-	w5.Destroy()
-	w6.Destroy()
-	w7.Destroy()
-	w8.Destroy()
-	w9.Destroy()
-	w10.Destroy()
-	w11.Destroy()
-	w12.Destroy()
-	w13.Destroy()
-	w14.Destroy()
-	w15.Destroy()
-	w16.Destroy()
-	w17.Destroy()
-	w18.Destroy()
-	w19.Destroy()
-	w20.Destroy()
-	w21.Destroy()
+	Loop
+	{
+		if (A_Index > max)
+		{
+			break
+		}
+		
+		w%A_index%.Destroy()
+	}
 	wauthor.Destroy()
 	wversion.Destroy()
 	w0.Destroy()
@@ -537,27 +489,15 @@ Numpad5::
 return
 Numpad6::
 	wr := Vis2.Graphics.Subtitle.Render("", "xCenter y55% w800 h350 c0099FF")
-	w1.Destroy()
-	w2.Destroy()
-	w3.Destroy()
-	w4.Destroy()
-	w5.Destroy()
-	w6.Destroy()
-	w7.Destroy()
-	w8.Destroy()
-	w9.Destroy()
-	w10.Destroy()
-	w11.Destroy()
-	w12.Destroy()
-	w13.Destroy()
-	w14.Destroy()
-	w15.Destroy()
-	w16.Destroy()
-	w17.Destroy()
-	w18.Destroy()
-	w19.Destroy()
-	w20.Destroy()
-	w21.Destroy()
+	Loop
+	{
+		if (A_Index > max)
+		{
+			break
+		}
+		
+		w%A_index%.Destroy()
+	}
 	wauthor.Destroy()
 	wversion.Destroy()
 	w0.Destroy()
@@ -573,6 +513,7 @@ Numpad6::
 	
 return
 
+;Bindy pokud je aktivní jiné okno
 #If secondwin == true
 Esc::
 	Loop, 4
@@ -582,6 +523,7 @@ Esc::
 	secondwin := false
 return
 
+;Bindy pokud je aktivní jiné okno
 #If secondwin2 == true
 Esc::
 	SplashImage, Off
@@ -600,8 +542,11 @@ alt::
 shift::
 enter::
 t::
+lbutton::
+rbutton::
 return
 
+;Bindy pokud je aktivní jiné okno
 #If secondwin3 == true
 Delete::
 	Loop, 7
@@ -629,7 +574,7 @@ Enter::
 	secondwin3 := false
 return
 
-
+;Bindy pokud je aktivní input v chatu
 #If chatinput == true
 Delete::
 	SendInput ^a{BackSpace}{Esc}
@@ -743,8 +688,11 @@ SendInput ^a
 chatinput := false
 return
 
+;============================;
+;         [ CHATLOG ]        ;
+;============================;
 
-
+;Hlavní funkce, která kontroluje chatlog.txt
 Check:
 x := % FormatChatlog(2, chatlogpath)
 if (ileft == "T")
@@ -762,6 +710,7 @@ if (ileft == "T")
 		leftpickup := false
     }
 }
+
 if (!(x == y))
 {
 	if (iup == "T")
