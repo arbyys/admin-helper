@@ -1,4 +1,4 @@
-﻿FileEncoding, UTF-8
+FileEncoding, UTF-8
 #include <Vis2>
 #include <Notify>
 
@@ -50,6 +50,7 @@ if (!(version == res))
 		FileMove, new.ahk, Main.ahk
 		IniWrite, %res%, data.ini, Version, version
 		MsgBox, Úspěšně updatováno na verzi %res%!
+		Reload
 	}
 }
 
