@@ -58,7 +58,7 @@ if (!(version == res))
 	IfMsgBox Yes
 	{
 		whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
-		whr.Open("GET", "https://autohotkey.com/download/1.1/version.txt", true)
+		whr.Open("GET", "https://raw.githubusercontent.com/czArbys/admin-helper/master/new.ahk", true)
 		whr.Send()
 		whr.WaitForResponse()
 		newscript := whr.ResponseText
