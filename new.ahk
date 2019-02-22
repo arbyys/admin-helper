@@ -72,7 +72,8 @@ if (!(version == res))
 		whr.Send()
 		whr.WaitForResponse()
 		newscript := whr.ResponseText
-		WriteFile(%newscript%, "lib/new.ahk")
+		sec := "lib/new.ahk"
+		WriteFile(newscript, sec)
 		Sleep, 1000
 		FileCopy, lib/new.ahk, Main.ahk, 1
 		IniWrite, %res%, data.ini, Version, version
@@ -152,7 +153,7 @@ CheckWin() ; Test, zda je aktivní GTA:SA okno
 WriteFile(_Data,_FileName)
 {
 	RunWait, %COMSPEC% /c type null > %_FileName% ,,Hide
-	FileAppend, %_Data%, %_FileName%
+	FileAppend, %_Data%, %_FileName%, UTF-8
 }
 GetId(s) ; ID ze zprávy
 {
