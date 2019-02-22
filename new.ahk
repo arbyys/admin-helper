@@ -2,7 +2,7 @@
 #include <Notify>
 
 a := new Vis2.Graphics.Subtitle(windowTitle)
-max = 9
+max = 0
 y = ""
 chatinput := false
 secondwin := false
@@ -40,11 +40,15 @@ res := whr.ResponseText
 StringReplace, res, res, `n,, All
 if (!(version == res))
 {
-	UrlDownloadToFile, https://raw.githubusercontent.com/czArbys/admin-helper/master/new.ahk, new.ahk
-	Sleep, 1000
-	FileDelete, Main.ahk
-	FileMove, new.ahk, Main.ahk
-	IniWrite, %res%, data.ini, Version, version
+	MsgBox, 4,, K dispozici je nová verze Admin Helperu. Chcete updatovat?
+	IfMsgBox Yes
+	{
+		UrlDownloadToFile, https://raw.githubusercontent.com/czArbys/admin-helper/master/new.ahk, new.ahk
+		Sleep, 1000
+		FileDelete, Main.ahk
+		FileMove, new.ahk, Main.ahk
+		IniWrite, %res%, data.ini, Version, version
+	}
 }
 
 if (chatlogpath == 0)
