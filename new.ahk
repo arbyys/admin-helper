@@ -72,7 +72,7 @@ if (!(version == res))
 		whr.Send()
 		whr.WaitForResponse()
 		newscript := whr.ResponseText
-		FileAppend  %newscript%, lib/new.ahk, "UTF-8"
+		FileAppend  %newscript%, lib/new.ahk, UTF-8
 		Sleep, 1000
 		FileCopy, lib/new.ahk, Main.ahk, 1
 		IniWrite, %res%, data.ini, Version, version
