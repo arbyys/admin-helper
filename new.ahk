@@ -1,3 +1,4 @@
+FileEncoding UTF-8
 #include <Vis2>
 #include <Notify>
 
