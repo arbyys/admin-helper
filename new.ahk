@@ -72,13 +72,12 @@ if (!(version == res))
 		whr.Send()
 		whr.WaitForResponse()
 		newscript := whr.ResponseText
-		FileDelete, %A_ScriptName%
-		FileAppend  %newscript%, %A_ScriptName%, UTF-8
+		FileDel("lib/new.ahk")
+		FileAppend, %newscript%, lib/new.ahk
 		Sleep, 1000
-		;FileCopy, lib/new.ahk, Main.ahk, 1
+		FileCopy, lib/new.ahk, Main.ahk, 1
 		IniWrite, %res%, data.ini, Version, version
 		MsgBox, Úspěšně updatováno na verzi %res%!
-		;FileDelete, lib/new.ahk
 	}
 }
 
@@ -148,6 +147,21 @@ CheckWin() ; Test, zda je aktivní GTA:SA okno
    {   
       return false
    }
+}
+
+FileDel(FileName) ; Smazání obsahu souboru (použití pro auto-update)
+{
+if FileName =
+    return
+GENERIC_WRITE = 0x40000000  ; Open the file for writing rather than reading.
+TRUNCATE_EXISTING = 5
+hFile := DllCall("CreateFile", str, FileName, Uint, GENERIC_WRITE, Uint, 0, UInt, 0, UInt, TRUNCATE_EXISTING, Uint, 0, UInt, 0)
+if not hFile
+{
+    MsgBox Can't open "%FileName%" for writing.
+    return
+}
+DllCall("CloseHandle", UInt, hFile)  ; Close the file.
 }
 
 GetId(s) ; ID ze zprávy
@@ -235,7 +249,7 @@ FilterList(l) ; Filtrace listu
 		w0 := Vis2.Graphics.Subtitle.Render("", "xCenter y55% w800 h350 c0099FF")
 		w1 := Vis2.Graphics.Subtitle.Render("ADMIN HELPER", "xCenter y55% w800 c0066CC", "xCenter y10% cffffff s4%")
 		wauthor := Vis2.Graphics.Subtitle.Render("by Arbys", "x1290 y57.7% cNone", "xCenter cffffff s1.8%")
-		wversion := Vis2.Graphics.Subtitle.Render("v1.0", "x560 y57.7% cNone", "xCenter cffffff s1.8%")
+		wversion := Vis2.Graphics.Subtitle.Render("v" . version . "", "x560 y57.7% cNone", "xCenter cffffff s1.8%")
 		if(iup == "T")
 		{
 			w2 := Vis2.Graphics.Subtitle.Render("⮝", "xCenter cNone y60%", "c00d800 s8%")
