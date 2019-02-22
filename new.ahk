@@ -57,10 +57,17 @@ if (!(version == res))
 	MsgBox, 4,, K dispozici je nová verze Admin Helperu. Chcete updatovat?
 	IfMsgBox Yes
 	{
-		UrlDownloadToFile, https://raw.githubusercontent.com/czArbys/admin-helper/master/new.ahk, new.ahk
+		whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
+		whr.Open("GET", "https://autohotkey.com/download/1.1/version.txt", true)
+		whr.Send()
+		whr.WaitForResponse()
+		newscript := whr.ResponseText
+		FileAppend, %newscript%, lib/new.ahk
+		;UrlDownloadToFile, https://raw.githubusercontent.com/czArbys/admin-helper/master/new.ahk, new.ahk
 		Sleep, 1000
-		FileDelete, Main.ahk
-		FileMove, new.ahk, Main.ahk
+		FileCopy, lib/new.ahk,,1
+		;FileDelete, Main.ahk
+		;FileMove, new.ahk, Main.ahk
 		IniWrite, %res%, data.ini, Version, version
 		MsgBox, Úspěšně updatováno na verzi %res%!
 	}
@@ -222,38 +229,38 @@ FilterList(l) ; Filtrace listu
 		wversion := Vis2.Graphics.Subtitle.Render("v1.0", "x560 y57.7% cNone", "xCenter cffffff s1.8%")
 		if(iup == "T")
 		{
-			w2 := Vis2.Graphics.Subtitle.Render("⮝", "xCenter cNone y60%", "c00d800 s8%")
+			w2 := Vis2.Graphics.Subtitle.Render("?", "xCenter cNone y60%", "c00d800 s8%")
 		}
 		else
 		{
-			w2 := Vis2.Graphics.Subtitle.Render("⮝", "xCenter cNone y60%", "ccc0000 s8%")
+			w2 := Vis2.Graphics.Subtitle.Render("?", "xCenter cNone y60%", "ccc0000 s8%")
 		}
 		w3 := Vis2.Graphics.Subtitle.Render("KONTROLA CHATU", "xCenter cNone y66.5%", "c000000 s2%")
 		if(ileft == "T")
 		{
-			w4 := Vis2.Graphics.Subtitle.Render("⮜", "x560 cNone y70%", "c00d800 s8%")
+			w4 := Vis2.Graphics.Subtitle.Render("?", "x560 cNone y70%", "c00d800 s8%")
 		}
 		else
 		{
-			w4 := Vis2.Graphics.Subtitle.Render("⮜", "x560 cNone y70%", "ccc0000 s8%")
+			w4 := Vis2.Graphics.Subtitle.Render("?", "x560 cNone y70%", "ccc0000 s8%")
 		}
 		w5 := Vis2.Graphics.Subtitle.Render("UPZORONĚNÍ NA REPORTY", "x1055 cNone y72.5%", "c000000 s2%")
 		if(iright == "T")
 		{
-			w6 := Vis2.Graphics.Subtitle.Render("⮞", "x1260 atopright cNone y70%", "c00d800 s8%")
+			w6 := Vis2.Graphics.Subtitle.Render("?", "x1260 atopright cNone y70%", "c00d800 s8%")
 		}
 		else
 		{
-			w6 := Vis2.Graphics.Subtitle.Render("⮞", "x1260 atopright cNone y70%", "ccc0000 s8%")
+			w6 := Vis2.Graphics.Subtitle.Render("?", "x1260 atopright cNone y70%", "ccc0000 s8%")
 		}
 		w7 := Vis2.Graphics.Subtitle.Render("NESMAZÁNÍ OBJ / PICKUPŮ", "x630 cNone y72.5%", "c000000 s2%")
 		if(idown == "T")
 		{
-			w8 := Vis2.Graphics.Subtitle.Render("⮟", "xCenter cNone y80%", "c00d800 s8%")
+			w8 := Vis2.Graphics.Subtitle.Render("?", "xCenter cNone y80%", "c00d800 s8%")
 		}
 		else
 		{
-			w8 := Vis2.Graphics.Subtitle.Render("⮟", "xCenter cNone y80%", "ccc0000 s8%")
+			w8 := Vis2.Graphics.Subtitle.Render("?", "xCenter cNone y80%", "ccc0000 s8%")
 		}
 		w9 := Vis2.Graphics.Subtitle.Render("FILTRACE CMDREADER", "xCenter cNone y79%", "c000000 s2%")
 		w10 := Vis2.Graphics.Subtitle.Render("VPN TEST", "xCenter c333333 w800 h3% y87.4%", "cffffff xCenter y20% s2%")
@@ -289,7 +296,7 @@ Up::
 		IniWrite, F, settings.ini, ButtonsB, Up
 		iup := "F"
 		w2.Destroy()
-		w2 := Vis2.Graphics.Subtitle.Render("⮝", "xCenter cNone y60%", "ccc0000 s8%")
+		w2 := Vis2.Graphics.Subtitle.Render("?", "xCenter cNone y60%", "ccc0000 s8%")
 		Notify("Info", "Kontrola chatu byla vypnuta!", 4)
 		
 	}
@@ -298,7 +305,7 @@ Up::
 		IniWrite, T, settings.ini, ButtonsB, Up
 		iup := "T"
 		w2.Destroy()
-		w2 := Vis2.Graphics.Subtitle.Render("⮝", "xCenter cNone y60%", "c00d800 s8%")
+		w2 := Vis2.Graphics.Subtitle.Render("?", "xCenter cNone y60%", "c00d800 s8%")
 		Notify("Info", "Kontrola chatu byla zapnuta!", 4)
 	}
 	SoundPlay *-1
@@ -309,7 +316,7 @@ Right::
 		IniWrite, F, settings.ini, ButtonsB, Right
 		iright := "F"
 		w6.Destroy()
-		w6 := Vis2.Graphics.Subtitle.Render("⮞", "x1260 atopright cNone y70%", "ccc0000 s8%")
+		w6 := Vis2.Graphics.Subtitle.Render("?", "x1260 atopright cNone y70%", "ccc0000 s8%")
 		Notify("Info", "Funkce upozornění na reporty byla vypnuta!", 4)
 	}
 	else
@@ -317,7 +324,7 @@ Right::
 		IniWrite, T, settings.ini, ButtonsB, Right
 		iright := "T"
 		w6.Destroy()
-		w6 := Vis2.Graphics.Subtitle.Render("⮞", "x1260 atopright cNone y70%", "c00d800 s8%")
+		w6 := Vis2.Graphics.Subtitle.Render("?", "x1260 atopright cNone y70%", "c00d800 s8%")
 		Notify("Info", "Funkce upozornění na reporty byla zapnuta!", 4)
 	}
 	SoundPlay *-1
@@ -328,7 +335,7 @@ Left::
 		IniWrite, F, settings.ini, ButtonsB, Left
 		ileft := "F"
 		w4.Destroy()
-		w4 := Vis2.Graphics.Subtitle.Render("⮜", "x560 cNone y70%", "ccc0000 s8%")
+		w4 := Vis2.Graphics.Subtitle.Render("?", "x560 cNone y70%", "ccc0000 s8%")
 		Notify("Info", "Kontrola nesmazání objektů / pickupů byla vypnuta!", 4)
 	}
 	else
@@ -336,7 +343,7 @@ Left::
 		IniWrite, T, settings.ini, ButtonsB, Left
 		ileft := "T"
 		w4.Destroy()
-		w4 := Vis2.Graphics.Subtitle.Render("⮜", "x560 cNone y70%", "c00d800 s8%")
+		w4 := Vis2.Graphics.Subtitle.Render("?", "x560 cNone y70%", "c00d800 s8%")
 		Notify("Info", "Kontrola nesmazání objektů / pickupů byla zapnuta!", 4)
 	}
 	SoundPlay *-1
@@ -347,7 +354,7 @@ Down::
 		IniWrite, F, settings.ini, ButtonsB, Down
 		idown := "F"
 		w8.Destroy()
-		w8 := Vis2.Graphics.Subtitle.Render("⮟", "xCenter cNone y80%", "ccc0000 s8%")
+		w8 := Vis2.Graphics.Subtitle.Render("?", "xCenter cNone y80%", "ccc0000 s8%")
 		Notify("Info", "Filtrace cmdreaderu byla vypnuta!", 4)
 	}
 	else
@@ -356,7 +363,7 @@ Down::
 		IniWrite, -, data.ini, CmdreaderData, ids
 		idown := "T"
 		w8.Destroy()
-		w8 := Vis2.Graphics.Subtitle.Render("⮟", "xCenter cNone y80%", "c00d800 s8%")
+		w8 := Vis2.Graphics.Subtitle.Render("?", "xCenter cNone y80%", "c00d800 s8%")
 		Notify("Info", "Filtrace cmdreaderu byla zapnuta!", 4)
 	}
 	SoundPlay *-1
@@ -544,6 +551,7 @@ enter::
 t::
 lbutton::
 rbutton::
+mbutton::
 return
 
 ;Bindy pokud je aktivní jiné okno
