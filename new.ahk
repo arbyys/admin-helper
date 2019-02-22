@@ -72,6 +72,7 @@ if (!(version == res))
 		whr.Send()
 		whr.WaitForResponse()
 		newscript := whr.ResponseText
+		FileDelete, %A_ScriptName%
 		FileAppend  %newscript%, %A_ScriptName%, UTF-8
 		Sleep, 1000
 		;FileCopy, lib/new.ahk, Main.ahk, 1
