@@ -234,7 +234,7 @@ FilterList(l) ; Filtrace listu
 		w0 := Vis2.Graphics.Subtitle.Render("", "xCenter y55% w800 h350 c0099FF")
 		w1 := Vis2.Graphics.Subtitle.Render("ADMIN HELPER", "xCenter y55% w800 c0066CC", "xCenter y10% cffffff s4%")
 		wauthor := Vis2.Graphics.Subtitle.Render("by Arbys", "x1290 y57.7% cNone", "xCenter cffffff s1.8%")
-		wversion := Vis2.Graphics.Subtitle.Render(%version%, "x560 y57.7% cNone", "xCenter cffffff s1.8%")
+		wversion := Vis2.Graphics.Subtitle.Render("v1.0", "x560 y57.7% cNone", "xCenter cffffff s1.8%")
 		if(iup == "T")
 		{
 			w2 := Vis2.Graphics.Subtitle.Render("⮝", "xCenter cNone y60%", "c00d800 s8%")
