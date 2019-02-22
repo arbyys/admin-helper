@@ -40,7 +40,11 @@ res := whr.ResponseText
 StringReplace, res, res, `n,, All
 if (!(version == res))
 {
-	MsgBox, nova verze
+	UrlDownloadToFile, https://raw.githubusercontent.com/czArbys/admin-helper/master/new.ahk, new.ahk
+	Sleep, 1000
+	FileDelete, Main.ahk
+	FileMove, new.ahk, Main.ahk
+	IniWrite, %res%, data.ini, Version, version
 }
 
 if (chatlogpath == 0)
