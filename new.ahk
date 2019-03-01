@@ -479,7 +479,7 @@ if (CheckWin())
 	w0.Destroy()
 	wr.Destroy()
 	int := FilterList(pose)
-	SendInput t^a/ [ Zadej ID výherců, oddělená mezerou | 'ENTER' = potvrdit; 'DELETE' = ukončit ] : %int%
+	SendInput t^a/ [ Zadej ID výherců, oddělená mezerou | 'ENTER' = potvrdit; 'DELETE' = ukončit ] : 
 	chatinput := true
 	action := 4
 }
@@ -804,22 +804,6 @@ if (!(x == y))
 		leftpickup := true
 	}
 	
-	else if InStr(x, "vyhrál závod v čase")
-	{
-		idh := % GetId(x)
-		pose[1] := idh
-
-	}
-	
-	else if InStr(x, "prohrál závod s časem")
-	{
-		idh := % GetIdRace(x)
-		posh := % GetPos(x)
-		if posh between 2 and 5
-		{
-			pose[posh] := idh
-		}
-	}
    y := x
 }
 return
