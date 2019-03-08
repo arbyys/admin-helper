@@ -479,7 +479,7 @@ if (CheckWin())
 	w0.Destroy()
 	wr.Destroy()
 	int := FilterList(pose)
-	SendInput t^a/ [ Zadej ID výherců, oddělená mezerou | 'ENTER' = potvrdit; 'DELETE' = ukončit ] : 
+	SendInput t^a/ [ Zadej ID výherců, oddělená mezerou | 'ENTER' = potvrdit; 'DELETE' = ukončit ] :{space}
 	chatinput := true
 	action := 4
 }
@@ -687,6 +687,8 @@ Enter::
 	}
 	else if (action == 43)
 	{
+		akce_odmeny := StrSplit(out1, A_Space)
+		
 		loca = 70
 		Loop
 		{
