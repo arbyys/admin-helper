@@ -591,6 +591,7 @@ Enter::
 			
 		s := "/vyhralakcigm " . akce_id[A_index] . " " . akce_odmeny[A_index] . " " . akce_nazev . " | " . A_Index . ". místo"
 		SendInput t^a%s%{Enter}
+		Sleep, 250
 	}
 	secondwin3 := false
 return
